@@ -6,7 +6,6 @@
 <title>Abhinav Krishna | Portfolio</title>
 
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *, *::before, *::after {
@@ -461,13 +460,8 @@ footer {
     </div>
 
     <div class="card">
-<<<<<<< HEAD
       <a href="git and git hub.jpg" target="_blank" rel="noopener noreferrer">
         <img src="git and git hub.jpg" alt="Git and GitHub">
-=======
-      <a href="git-and-git-hub.jpg" target="_blank" rel="noopener noreferrer">
-        <img src="git-and-git-hub.jpg" alt="Git and GitHub">
->>>>>>> b81fefe43085fe941e086406d33960271c01d492
       </a>
       <div class="card-body">
         <h3>The Complete Git Guide: Master Git &amp; GitHub</h3>
@@ -531,38 +525,37 @@ footer {
 </footer>
 
 <script>
-/* ── SUPABASE ── */
-const supabaseUrl = "https://cymbgtvahvkaktrcjbrx.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5bWJndHZhaHZrYWt0cmNqYnJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwNjg3MTcsImV4cCI6MjA4NjY0NDcxN30.AzlHEJDRf93YoAtgJ4kWxgaKJtcmPTEM-wLm0Stirrk";
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
 document.getElementById("feedbackForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const status = document.getElementById("status");
   const btn    = e.target.querySelector('button[type="submit"]');
 
-  status.innerText    = "Sending…";
-  status.style.color  = "#6b6b6b";
-  btn.disabled        = true;
-  btn.innerText       = "Sending…";
+  status.innerText   = "Sending…";
+  status.style.color = "#6b6b6b";
+  btn.disabled       = true;
+  btn.innerText      = "Sending…";
 
   const name    = document.getElementById("name").value.trim();
   const email   = document.getElementById("email").value.trim();
   const message = document.getElementById("message").value.trim();
 
   try {
-    const { error } = await supabaseClient
-      .from("feedback")
-      .insert([{ name, email, message }]);
+    const res  = await fetch("https://portfolio-backend-cijt.onrender.com/api/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, message })
+    });
 
-    if (error) {
-      status.innerText   = `❌ ${error.message}`;
-      status.style.color = "#c0392b";
-    } else {
+    const data = await res.json();
+
+    if (data.success) {
       status.innerText   = "✅ Message sent — thank you!";
       status.style.color = "#3d6b5e";
       e.target.reset();
       setTimeout(() => { status.innerText = ""; }, 5000);
+    } else {
+      status.innerText   = `❌ ${data.error}`;
+      status.style.color = "#c0392b";
     }
   } catch (err) {
     status.innerText   = "❌ Something went wrong. Please try again.";
