@@ -522,26 +522,14 @@ footer {
 
 <footer>
   © 2026 Abhinav Krishna &nbsp;|&nbsp; All Rights Reserved
-  <br><span id="visit-count" style="margin-top:6px;display:inline-block;font-size:0.78rem;opacity:0.6;">👁 Loading visits...</span>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* ── VISITOR COUNTER ── */
-// Change this URL to your Flask server's address when hosted
-const FLASK_URL = "http://localhost:5000";
-
-async function fetchVisits() {
-  try {
-    const res  = await fetch(`${FLASK_URL}/api/visits`);
-    const data = await res.json();
-    document.getElementById("visit-count").innerText = `👁 ${data.visits.toLocaleString()} visits`;
-  } catch (err) {
-    document.getElementById("visit-count").innerText = "";
-  }
-}
-fetchVisits();
-
-const BACKEND_URL = "http://localhost:5000";
+const supabaseClient = supabase.createClient(
+  "https://cymbgtvahvkaktrcjbrx.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5bWJndHZhaHZrYWt0cmNqYnJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwNjg3MTcsImV4cCI6MjA4NjY0NDcxN30.AzlHEJDRf93YoAtgJ4kWxgaKJtcmPTEM-wLm0Stirrk"
+);
 
 document.getElementById("feedbackForm").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -558,25 +546,21 @@ document.getElementById("feedbackForm").addEventListener("submit", async (e) => 
   const message = document.getElementById("message").value.trim();
 
   try {
-    const res  = await fetch(`${BACKEND_URL}/api/feedback`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, message })
-    });
+    const { error } = await supabaseClient
+      .from("feedback")
+      .insert([{ name, email, message }]);
 
-    const data = await res.json();
-
-    if (data.success) {
+    if (error) {
+      status.innerText   = `❌ ${error.message}`;
+      status.style.color = "#c0392b";
+    } else {
       status.innerText   = "✅ Message sent — thank you!";
       status.style.color = "#3d6b5e";
       e.target.reset();
       setTimeout(() => { status.innerText = ""; }, 5000);
-    } else {
-      status.innerText   = `❌ ${data.error}`;
-      status.style.color = "#c0392b";
     }
   } catch (err) {
-    status.innerText   = "❌ Could not reach server. Is it running?";
+    status.innerText   = "❌ Something went wrong. Please try again.";
     status.style.color = "#c0392b";
   } finally {
     btn.disabled  = false;
