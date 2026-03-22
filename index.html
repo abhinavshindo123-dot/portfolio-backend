@@ -6,6 +6,7 @@
 <title>Abhinav Krishna | Portfolio</title>
 
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *, *::before, *::after {
@@ -442,8 +443,8 @@ footer {
   <div class="cards">
 
     <div class="card">
-      <a href="front-and-web-developer.png" target="_blank" rel="noopener noreferrer">
-        <img src="front-and-web-developer.png" alt="Front End Web Developer">
+      <a href="front and web developer.png" target="_blank" rel="noopener noreferrer">
+        <img src="front and web developer.png" alt="Front End Web Developer">
       </a>
       <div class="card-body">
         <h3>Front End Web Developer Certification</h3>
@@ -451,8 +452,8 @@ footer {
     </div>
 
     <div class="card">
-      <a href="node-js.jpg" target="_blank" rel="noopener noreferrer">
-        <img src="node-js.jpg" alt="Node JS Advanced Concepts">
+      <a href="node js.jpg" target="_blank" rel="noopener noreferrer">
+        <img src="node js.jpg" alt="Node JS Advanced Concepts">
       </a>
       <div class="card-body">
         <h3>Node JS: Advanced Concepts</h3>
@@ -460,8 +461,8 @@ footer {
     </div>
 
     <div class="card">
-      <a href="git-and-git-hub.jpg" target="_blank" rel="noopener noreferrer">
-        <img src="git-and git-hub.jpg" alt="Git and GitHub">
+      <a href="git and git hub.jpg" target="_blank" rel="noopener noreferrer">
+        <img src="git and git hub.jpg" alt="Git and GitHub">
       </a>
       <div class="card-body">
         <h3>The Complete Git Guide: Master Git &amp; GitHub</h3>
@@ -469,8 +470,8 @@ footer {
     </div>
 
     <div class="card">
-      <a href="aws-clod-foundation.png" target="_blank" rel="noopener noreferrer">
-        <img src="aws-clod-foundation.png" alt="AWS Cloud Foundations">
+      <a href="aws clod foundation.png" target="_blank" rel="noopener noreferrer">
+        <img src="aws clod foundation.png" alt="AWS Cloud Foundations">
       </a>
       <div class="card-body">
         <h3>AWS Academy Graduate – Cloud Foundations</h3>
@@ -524,22 +525,21 @@ footer {
   © 2026 Abhinav Krishna &nbsp;|&nbsp; All Rights Reserved
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const supabaseClient = supabase.createClient(
-  "https://cymbgtvahvkaktrcjbrx.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5bWJndHZhaHZrYWt0cmNqYnJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwNjg3MTcsImV4cCI6MjA4NjY0NDcxN30.AzlHEJDRf93YoAtgJ4kWxgaKJtcmPTEM-wLm0Stirrk"
-);
+/* ── SUPABASE ── */
+const supabaseUrl = "https://cymbgtvahvkaktrcjbrx.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5bWJndHZhaHZrYWt0cmNqYnJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwNjg3MTcsImV4cCI6MjA4NjY0NDcxN30.AzlHEJDRf93YoAtgJ4kWxgaKJtcmPTEM-wLm0Stirrk";
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
 document.getElementById("feedbackForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const status = document.getElementById("status");
   const btn    = e.target.querySelector('button[type="submit"]');
 
-  status.innerText   = "Sending…";
-  status.style.color = "#6b6b6b";
-  btn.disabled       = true;
-  btn.innerText      = "Sending…";
+  status.innerText    = "Sending…";
+  status.style.color  = "#6b6b6b";
+  btn.disabled        = true;
+  btn.innerText       = "Sending…";
 
   const name    = document.getElementById("name").value.trim();
   const email   = document.getElementById("email").value.trim();
