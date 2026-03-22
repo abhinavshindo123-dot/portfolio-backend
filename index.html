@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abhinav Krishna | Portfolio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg:        #f5f2ee;
+  --surface:   #edeae5;
+  --card:      #ffffff;
+  --accent:    #3d6b5e;
+  --accent-lt: #d4e8e2;
+  --text:      #1e1e1e;
+  --muted:     #6b6b6b;
+  --border:    #dedad4;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+
+nav h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 32px;
+}
+
+nav ul li a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  transition: color 0.2s;
+}
+
+nav ul li a:hover { color: var(--accent); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: var(--surface);
+  padding: 100px 40px 60px;
+}
+
+.hero-photo {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent-lt);
+  margin-bottom: 24px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 3rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.hero h1 span { color: var(--accent); }
+
+.hero .subtitle {
+  margin: 10px 0 28px;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 11px 30px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+  background: #2f5548;
+  transform: translateY(-1px);
+}
+
+/* ── SECTIONS ── */
+section {
+  padding: 90px 48px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+section.full-bg {
+  max-width: 100%;
+  background: var(--surface);
+  padding: 90px 48px;
+}
+
+section.full-bg > div { max-width: 900px; margin: 0 auto; }
+
+section h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.section-rule {
+  width: 48px;
+  height: 2px;
+  background: var(--accent-lt);
+  border: none;
+  margin-bottom: 36px;
+}
+
+/* ── ABOUT ── */
+#about p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  max-width: 620px;
+  line-height: 1.8;
+}
+
+/* ── SKILLS ── */
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.skill-tag {
+  background: var(--accent-lt);
+  color: var(--accent);
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+/* ── CERTS ── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
+}
+
+.card a img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.card-body {
+  padding: 14px 16px;
+}
+
+.card-body h3 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+/* ── JOURNEY ── */
+.timeline {
+  list-style: none;
+  position: relative;
+  padding-left: 24px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 4px;
+  bottom: 4px;
+  width: 2px;
+  background: var(--accent-lt);
+}
+
+.timeline li {
+  position: relative;
+  padding: 0 0 24px 24px;
+  color: var(--muted);
+  font-size: 0.97rem;
+}
+
+.timeline li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+}
+
+.timeline li .year {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+
+/* ── PROJECTS ── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.project-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
+}
+
+.project-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.project-card p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.project-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-lt);
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+/* ── FEEDBACK ── */
+.feedback-form {
+  max-width: 520px;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+  width: 100%;
+  padding: 12px 16px;
+  margin: 8px 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.feedback-form input:focus,
+.feedback-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.feedback-form button {
+  margin-top: 8px;
+  padding: 12px 32px;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #fff;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.feedback-form button:hover {
+  background: #2f5548;
+  transform: translateY(-1px);
+}
+
+#status {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 24px 48px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 680px) {
+  nav { padding: 14px 20px; }
+  nav ul { gap: 16px; }
+  section { padding: 70px 24px; }
+  .hero h1 { font-size: 2rem; }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <h2>Portfolio</h2>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#cert">Certs</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#feedback">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <img src="abhinav.jpeg" alt="Abhinav Krishna" class="hero-photo">
+    <h1>Hi, I'm <span>Abhinav Krishna</span></h1>
+    <a href="#feedback" class="btn">Get In Touch</a>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2>About Me</h2>
+  <hr class="section-rule">
+  <p>
+    I'm a BCA Cloud Computing student who enjoys building things and learning how technology works.
+    Right now I'm focused on cloud and DevOps, and working on projects to grow my skills.
+  </p>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="full-bg">
+  <div>
+    <h2>Technical Skills</h2>
+    <hr class="section-rule">
+    <div class="skills-grid">
+      <span class="skill-tag">C</span>
+      <span class="skill-tag">Python</span>
+      <span class="skill-tag">HTML &amp; CSS</span>
+      <span class="skill-tag">Linux</span>
+      <span class="skill-tag">Git &amp; GitHub</span>
+      <span class="skill-tag">AWS</span>
+      <span class="skill-tag">VirtualBox</span>
+      <span class="skill-tag">Flask</span>
+      <!-- ADD MORE SKILLS HERE as <span class="skill-tag">...</span> -->
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="cert">
+  <h2>Certifications</h2>
+  <hr class="section-rule">
+  <div class="cards">
+
+    <div class="card">
+      <a href="front and web developer.png" target="_blank" rel="noopener noreferrer">
+        <img src="front and web developer.png" alt="Front End Web Developer">
+      </a>
+      <div class="card-body">
+        <h3>Front End Web Developer Certification</h3>
+      </div>
+    </div>
+
+    <div class="card">
+      <a href="node js.jpg" target="_blank" rel="noopener noreferrer">
+        <img src="node js.jpg" alt="Node JS Advanced Concepts">
+      </a>
+      <div class="card-body">
+        <h3>Node JS: Advanced Concepts</h3>
+      </div>
+    </div>
+
+    <div class="card">
+<<<<<<< HEAD
+      <a href="git and git hub.jpg" target="_blank" rel="noopener noreferrer">
+        <img src="git and git hub.jpg" alt="Git and GitHub">
+=======
+      <a href="git-and-git-hub.jpg" target="_blank" rel="noopener noreferrer">
+        <img src="git-and-git-hub.jpg" alt="Git and GitHub">
+>>>>>>> b81fefe43085fe941e086406d33960271c01d492
+      </a>
+      <div class="card-body">
+        <h3>The Complete Git Guide: Master Git &amp; GitHub</h3>
+      </div>
+    </div>
+
+    <div class="card">
+      <a href="aws clod foundation.png" target="_blank" rel="noopener noreferrer">
+        <img src="aws clod foundation.png" alt="AWS Cloud Foundations">
+      </a>
+      <div class="card-body">
+        <h3>AWS Academy Graduate – Cloud Foundations</h3>
+      </div>
+    </div>
+
+    <!-- ADD MORE CERT CARDS HERE -->
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <h2>Projects</h2>
+  <hr class="section-rule">
+  <div class="projects-grid">
+
+    <div class="project-card">
+      <h3>Portfolio Website</h3>
+      <p>Responsive personal portfolio with clean design and Supabase-powered feedback form.</p>
+      <span class="project-tag">HTML · CSS · JS</span>
+    </div>
+
+    <div class="project-card">
+      <h3>File Organizer</h3>
+      <p>Python script that automatically sorts files into folders by type and date.</p>
+      <span class="project-tag">Python</span>
+    </div>
+
+    <!-- ADD MORE PROJECT CARDS HERE -->
+
+  </div>
+</section>
+
+<!-- FEEDBACK -->
+<section id="feedback" class="full-bg">
+  <div>
+    <h2>Get In Touch</h2>
+    <hr class="section-rule">
+    <form class="feedback-form" id="feedbackForm">
+      <input type="text"  id="name"    placeholder="Your Name"     required>
+      <input type="email" id="email"   placeholder="Your Email"    required>
+      <textarea rows="5"  id="message" placeholder="Your message or feedback" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+    <div id="status"></div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Abhinav Krishna &nbsp;|&nbsp; All Rights Reserved
+</footer>
+
+<script>
+/* ── SUPABASE ── */
+const supabaseUrl = "https://cymbgtvahvkaktrcjbrx.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN5bWJndHZhaHZrYWt0cmNqYnJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwNjg3MTcsImV4cCI6MjA4NjY0NDcxN30.AzlHEJDRf93YoAtgJ4kWxgaKJtcmPTEM-wLm0Stirrk";
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+document.getElementById("feedbackForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const status = document.getElementById("status");
+  const btn    = e.target.querySelector('button[type="submit"]');
+
+  status.innerText    = "Sending…";
+  status.style.color  = "#6b6b6b";
+  btn.disabled        = true;
+  btn.innerText       = "Sending…";
+
+  const name    = document.getElementById("name").value.trim();
+  const email   = document.getElementById("email").value.trim();
+  const message = document.getElementById("message").value.trim();
+
+  try {
+    const { error } = await supabaseClient
+      .from("feedback")
+      .insert([{ name, email, message }]);
+
+    if (error) {
+      status.innerText   = `❌ ${error.message}`;
+      status.style.color = "#c0392b";
+    } else {
+      status.innerText   = "✅ Message sent — thank you!";
+      status.style.color = "#3d6b5e";
+      e.target.reset();
+      setTimeout(() => { status.innerText = ""; }, 5000);
+    }
+  } catch (err) {
+    status.innerText   = "❌ Something went wrong. Please try again.";
+    status.style.color = "#c0392b";
+  } finally {
+    btn.disabled  = false;
+    btn.innerText = "Send Message";
+  }
+});
+</script>
+
+</body>
+</html>
