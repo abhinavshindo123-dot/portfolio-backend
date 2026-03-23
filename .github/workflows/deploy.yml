@@ -1,0 +1,35 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1 — Get the code from GitHub
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2 — Install Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Step 3 — Install project packages
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4 — Check the server file exists and has no syntax errors
+      - name: Check server syntax
+        run: node --check server.js
+
+      # Step 5 — Deploy to Render
+      - name: Deploy to Render
+        run: |
+          curl -s "${{ secrets.RENDER_DEPLOY_HOOK }}"
+          echo "Deployment triggered on Render!"
